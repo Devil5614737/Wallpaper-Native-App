@@ -17,7 +17,7 @@ export default function ImagePreviewScreen() {
   const { previewImage } = useContext(WallpaperContext);
 
   const downloadFile = async (url) => {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     let path = url.split("/");
     const file_name = path[path.length - 1];
     FileSystem.downloadAsync(url, FileSystem.documentDirectory + file_name)
