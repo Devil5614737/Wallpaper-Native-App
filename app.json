@@ -21,8 +21,8 @@
       "supportsTablet": true
     },
     "android": {
-      "package":"com.wallpaper.app",
-      "versionCode":1,
+      "package": "com.wallpaper.app",
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#111111"
@@ -30,6 +30,11 @@
     },
     "web": {
       "favicon": "./assets/icon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "861fe66d-1277-4359-8d2f-42c474d8bfc6"
+      }
     }
   }
 }
