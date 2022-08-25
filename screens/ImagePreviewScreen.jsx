@@ -3,12 +3,7 @@ import {
   ImageBackground,
   StyleSheet,
   TouchableOpacity,
-  PermissionsAndroid,
-  Alert,
-  Platform,
-  CameraRoll,
   Dimensions,
-  Permission,
 } from "react-native";
 import React from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
