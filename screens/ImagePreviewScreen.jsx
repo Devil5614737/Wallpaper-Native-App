@@ -7,21 +7,36 @@ import {
   Alert,
   Platform,
   CameraRoll,
+  Dimensions,
+  Permission,
 } from "react-native";
 import React from "react";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useContext } from "react";
 import { WallpaperContext } from "../context/WallpaperContext";
-import { useState } from "react";
-
-
-import { downloadFileFromUri } from 'expo-downloads-manager';
-
-
+import * as MediaLibrary from "expo-media-library";
+import * as FileSystem from "expo-file-system";
 
 export default function ImagePreviewScreen() {
-    const { previewImage } = useContext(WallpaperContext);
+  const { previewImage } = useContext(WallpaperContext);
 
+  const downloadFile = async (url) => {
+    let path = url.split("/");
+    const file_name = path[path.length - 1];
+    FileSystem.downloadAsync(url, FileSystem.documentDirectory + file_name)
+      .then(({ uri }) => {
+        alert("Download successfull ", uri);
+        MediaLibrary.createAssetAsync(uri).then((asset) => {
+          console.log("asset", asset);
+          MediaLibrary.createAlbumAsync("myfolder", asset)
+            .then((data) => console.log(data.title))
+            .catch((error) => alert(error));
+        });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
   return (
     <ImageBackground
@@ -29,15 +44,9 @@ export default function ImagePreviewScreen() {
       style={styles.container}
       source={{ uri: previewImage.src.portrait }}
     >
-      <TouchableOpacity style={styles.button} 
-     onPress={async () => {
-        const { status, error } = await downloadFileFromUri(
-              previewImage.url,
-              previewImage.alt,
-            //   callback
-            );
-            console.log(status,error)
-      }}
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => downloadFile(previewImage.src.portrait)}
       >
         <MaterialCommunityIcons
           style={{ marginRight: 10 }}
@@ -45,10 +54,7 @@ export default function ImagePreviewScreen() {
           size={24}
           color="#858585"
         />
-        <Text
-         
-          style={{ color: "#858585", fontSize: 19, textAlign: "center" }}
-        >
+        <Text style={{ color: "#858585", fontSize: 19, textAlign: "center" }}>
           Download
         </Text>
       </TouchableOpacity>
@@ -58,7 +64,8 @@ export default function ImagePreviewScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    width: Dimensions.get("screen").width,
+    height: Dimensions.get("screen").height,
     position: "relative",
     padding: 12,
   },
