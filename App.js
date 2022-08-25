@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Home from './screens/Home';
 import ImagesScreen from './screens/ImagesScreen';
 import ImagePreviewScreen from './screens/ImagePreviewScreen';
+import { StatusBar } from 'expo-status-bar';
 
 
 
@@ -14,7 +15,7 @@ export default function App() {
 
   return (
   <>
-
+<StatusBar style='light'/>
 <WallpaperContextProvider>
 <NavigationContainer>
 <Stack.Navigator screenOptions={{headerShown:false,animation:'none'}}>

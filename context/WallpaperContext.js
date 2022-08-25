@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { createClient } from "pexels";
 
 
@@ -14,7 +14,9 @@ export const WallpaperContext=createContext(null);
 export  const WallpaperContextProvider=({children})=>{
     const[loading,setLoading]=useState(false);
 const[images,setImages]=useState([]);
-const[previewImage,setPreviewImage]=useState()
+const[previewImage,setPreviewImage]=useState();
+const[query,setQuery]=useState("");
+
 
 
 const searchByCategory=(category,navigation)=>{
@@ -34,7 +36,7 @@ const displayImage=(item,navigation)=>{
 
 
     return (
-        <WallpaperContext.Provider value={{searchByCategory,images,loading,displayImage,previewImage}}>
+        <WallpaperContext.Provider value={{searchByCategory,images,loading,displayImage,previewImage,setQuery,query,setLoading,setImages}}>
             {children}
         </WallpaperContext.Provider>
     )

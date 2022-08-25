@@ -6,19 +6,54 @@ import {
   TextInput,
   ScrollView,
 } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { Feather } from "@expo/vector-icons";
 import { Category } from "../components/category";
 import { useContext } from "react";
 import { WallpaperContext } from "../context/WallpaperContext";
-import { Motion } from "@legendapp/motion";
+import { createClient } from "pexels";
+import _ from 'lodash';
 
+
+
+const client = createClient(
+    "563492ad6f91700001000001d8e4d62e5c414d42b55acc1ef9442684"
+  );
 
 
 
 export default function Home({navigation}) {
-const {searchByCategory}=useContext(WallpaperContext)
   
+const {searchByCategory,query,setQuery,setLoading,setImages}=useContext(WallpaperContext)
+  
+
+const handleSearch=()=>{
+  setLoading(true)
+  client.photos.search({ query:query.toLowerCase(), per_page: 50 }).then((res) =>{ 
+      setLoading(false)
+      setImages(res.photos)
+    
+    }).catch(e=>console.log(e))
+navigation.navigate('ImagesScreen')
+
+}
+
+const handleChange=_.debounce((text)=>{
+  setQuery(text)
+},500
+);
+
+useEffect(()=>{
+  if(query){
+   handleSearch()
+  }else{
+    return ;
+  }
+
+},[query]);
+
+
+
 const categories=[
   {
     id:1,
@@ -43,6 +78,8 @@ const categories=[
 ]
 
 
+
+
   return (
     <>
       <View style={styles.container}>
@@ -56,6 +93,7 @@ const categories=[
               style={styles.input}
               placeholder="search image"
               placeholderTextColor="#858585"
+              onChangeText={handleChange}
             />
             <Feather
               style={{
