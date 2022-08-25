@@ -11,11 +11,13 @@ import { useContext } from "react";
 import { WallpaperContext } from "../context/WallpaperContext";
 import * as MediaLibrary from "expo-media-library";
 import * as FileSystem from "expo-file-system";
+import * as Haptics from 'expo-haptics';
 
 export default function ImagePreviewScreen() {
   const { previewImage } = useContext(WallpaperContext);
 
   const downloadFile = async (url) => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
     let path = url.split("/");
     const file_name = path[path.length - 1];
     FileSystem.downloadAsync(url, FileSystem.documentDirectory + file_name)
